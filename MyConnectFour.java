@@ -5,7 +5,7 @@ public class MyConnectFour {
 
   private BufferedReader input;
 
-  Board newBoard = new Board(6, 7);
+  Board newBoard = new Board(6, 8);
 
   public MyConnectFour() {
     input = new BufferedReader(new InputStreamReader(System.in));
@@ -27,7 +27,6 @@ public class MyConnectFour {
       String userInput = getUserInput();
       int move = Integer.parseInt(userInput);
       newBoard.placeCounter('r', move);
-      newBoard.printBoard(); // here
       boolean hasWon = false;
       // check horizontal
       newBoard.printBoard();
@@ -38,7 +37,6 @@ public class MyConnectFour {
         userInput = getUserInput();
         move = Integer.parseInt(userInput);
         newBoard.placeCounter('y', move);
-        newBoard.printBoard(); // here
         hasWon = false;
         newBoard.printBoard();
         if (hasWon) {

@@ -10,7 +10,18 @@ public class Player {
     this.isPlayerHuman = amIHuman;
     this.board = boardIplayOn;
   }
-
+  public char getChar(){
+    return this.playerCharacter;
+  }
+  public String getName(){
+    return this.playerName;
+  }
+  public boolean isHuman(){
+    return this.isPlayerHuman;
+  }
+  public Board whereIsPlaying(){
+    return this.board;
+  }
   private Boolean haveIWon() {
     
     return true;

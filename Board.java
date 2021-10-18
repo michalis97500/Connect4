@@ -33,6 +33,7 @@ public class Board {
 
   void printBoard() {
     for (int i = 0; i < board.length; i++) {
+      System.out.println(board[i].length);
       for (int j = 0; j < board[i].length - 1; j++) {
         if (board[j][i] != '\0') {
           System.out.print("| " + board[j][i] + " ");
@@ -45,17 +46,18 @@ public class Board {
     System.out.println(myPlaces);
   }
 
-  void placeCounter(char characterToPlace, int positionToDrop) {
+  boolean placeCounter(char characterToPlace, int positionToDrop) {
     boolean placed = false;
     for (int i = board.length - 1; i >= 0; i--) {
       if (!placed) {
-        if (board[positionToDrop - 1][i] != 'r' && board[positionToDrop - 1][i] != 'y') {// position null
+        if (board[positionToDrop - 1][i] == '\0') {// position null
           board[positionToDrop - 1][i] = characterToPlace;
           System.out.println(board[positionToDrop - 1][i]);
           placed = true;
         }
       }
     }
+    return placed;
   }
 
 }
