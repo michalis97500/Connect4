@@ -1,0 +1,3 @@
+interface PlayerInterface {
+  boolean haveIWon();
+}
