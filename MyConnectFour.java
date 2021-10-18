@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class MyConnectFour {
 
@@ -9,7 +10,6 @@ public class MyConnectFour {
 
   public MyConnectFour() {
     input = new BufferedReader(new InputStreamReader(System.in));
-
     playGame();
   }
 
@@ -22,29 +22,25 @@ public class MyConnectFour {
     System.out.println("");
     newBoard.printBoard();
     boolean win = false;
-    while (!win) {
-      // player 1
-      String userInput = getUserInput();
-      int move = Integer.parseInt(userInput);
-      newBoard.placeCounter('r', move);
-      boolean hasWon = false;
-      // check horizontal
-      newBoard.printBoard();
-      if (hasWon) {
-        win = true;
-      } else {
-        // player 2
-        userInput = getUserInput();
-        move = Integer.parseInt(userInput);
-        newBoard.placeCounter('y', move);
-        hasWon = false;
-        newBoard.printBoard();
-        if (hasWon) {
-          win = true;
+    Player p1 = new Player("michalis",'r',true,newBoard);
+    Player p2 = new Player("someonelse",'y',true,newBoard);
+    ArrayList<Player> players = new ArrayList<Player>();
+    players.add(p1);
+    players.add(p2);
+    String winner = "";
+    while (!win){
+      for(Player currentPlayer : players){
+        String userInput = getUserInput();
+        int move = Integer.parseInt(userInput);
+        currentPlayer.myMove(move);
+        win = currentPlayer.haveIWon();
+        if(win==true){
+          winner = currentPlayer.getName();
+          break;
         }
       }
     }
-    System.out.println("You Have Won!!!");
+    System.out.println(winner + " has won!!!");
   }
 
   private String getUserInput() {
@@ -52,7 +48,6 @@ public class MyConnectFour {
     try {
       toReturn = input.readLine();
     } catch (Exception e) {
-
     }
     return toReturn;
   }
