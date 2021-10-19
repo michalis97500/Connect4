@@ -1,10 +1,10 @@
 public class Board {
   private char[][] board;
-  String myPlaces;
-  int minBoard = 4;
-  int boardX;
-  int boardY;
-
+  private String myPlaces;
+  private int minBoard = 4;
+  private int boardX;
+  private int boardY;
+  
   public Board(int x, int y) { //guard
     if(x<minBoard){
       System.out.println("X-dimension must be " + minBoard + " or more");
@@ -19,7 +19,6 @@ public class Board {
     board = new char[x][y];
     myPlaces = GetMyPlaces(x);
   }
-
   private String GetMyPlaces(int x){
     try{
       StringBuilder stringToBuild = new StringBuilder();
@@ -53,26 +52,24 @@ public class Board {
     }
     System.out.println(myPlaces);
   }
-
-  public boolean placeCounter(char characterToPlace, int positionToDrop) {
+  public boolean placeCounter(char characterToPlace, int positionToDrop,char[][] _board) {
     boolean placed = false;
-    for (int i = boardY - 1; i >= 0; i--) {
+    for (int i = _board[0].length - 1; i >= 0; i--) {
       if (!placed) {
-        if (board[positionToDrop - 1][i] == '\0') {// position null
-          board[positionToDrop - 1][i] = characterToPlace;
+        if (_board[positionToDrop - 1][i] == '\0') {// position null
+          _board[positionToDrop - 1][i] = characterToPlace;
           placed = true;
         }
       }
     }
     return placed;
   }
-  
-    public boolean searchForWin(char didCharWin){
+  public boolean searchForWin(char didCharWin, char[][] _board){
     //check horizontal
     int count = 0;
     for(int i=0; i<boardX; i++){
       for(int j=0; j<boardY; j++){
-        if(board[i][j] == didCharWin){
+        if(_board[i][j] == didCharWin){
           count = count + 1;
           if(count == 4){
             return true;
@@ -87,7 +84,7 @@ public class Board {
     count = 0;
     for(int i=0; i<boardY; i++){
       for(int j=0; j<boardX; j++){
-        if(board[j][i] == didCharWin){
+        if(_board[j][i] == didCharWin){
           count = count + 1;
           if(count == 4){
             return true;
@@ -100,19 +97,43 @@ public class Board {
     }
     for(int i = 3; i < boardX; i++){ //check negative dia
 			for(int j = 0; j < boardY - 3; j++){
-				if (board[i][j] == didCharWin && board[i-1][j+1] == didCharWin && board[i-2][j+2] == didCharWin && board[i-3][j+3] == didCharWin){
+				if (_board[i][j] == didCharWin && _board[i-1][j+1] == didCharWin && _board[i-2][j+2] == didCharWin && _board[i-3][j+3] == didCharWin){
 					return true;
 				}
 			}
 		}
 		for(int i = 0; i < boardX - 3; i++){ //check positive dia
 			for(int j = 0; j < boardY - 3; j++){
-				if (board[i][j] == didCharWin && board[i+1][j+1] == didCharWin &&   board[i+2][j+2] == didCharWin && board[i+3][j+3] == didCharWin){
+				if (_board[i][j] == didCharWin && _board[i+1][j+1] == didCharWin &&   _board[i+2][j+2] == didCharWin && _board[i+3][j+3] == didCharWin){
 					return true;
 				}
 			}
 		}
     return false;
+  }
+  public char[][] getBoardChars(){
+    return board;
+  }
+  public void setBoardChars(char[][] setMe){
+    for(int i=0;i<setMe.length;i++){
+      for(int y=0;y<setMe[0].length;y++){
+        this.board[i][y] = setMe[i][y];
+      }
+    }
+  }
+  public int canMoveWin(char characterToPlace){
+    for(int i=1; i<=boardX; i++){
+      Board temporaryHelper = new Board(this.boardX,this.boardY);
+      temporaryHelper.setBoardChars(this.board);
+      placeCounter(characterToPlace, i,temporaryHelper.getBoardChars());
+      if(searchForWin(characterToPlace, temporaryHelper.getBoardChars()) == true){
+        return i;
+      } 
+    }
+    return 0;
+  }
+  public char getCharAtPosition(int x, int y){
+    return this.board[x][y];
   }
 
 }
