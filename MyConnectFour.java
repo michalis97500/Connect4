@@ -5,46 +5,11 @@ public class MyConnectFour {
   Board newBoard = new Board(6, 8);
   BufferedReader settings = new BufferedReader(new InputStreamReader(System.in));
   InputHandler input = new InputHandler();
-  Map<Integer, String> _myMap = new HashMap<Integer, String>();
-  Player p1;
-  int yo = 1;
-  _myMap.put(10, "Geeks");
-
+  ArrayList<Player> players = new ArrayList<Player>();
 
   public MyConnectFour() {
     try{
-      System.out.println("Enter number of players (2-10)");
-      int numberOfPlayers = input.ReadLine();
-      while(numberOfPlayers<=1 || numberOfPlayers >10){
-        System.out.println("Enter number of players (2-10)");
-        numberOfPlayers = input.ReadLine();
-      }
-      for(int i=0;i<numberOfPlayers;i++){
-        int z = 1+i;
-        System.out.println("Enter name of player " + z);
-        String newPlayerName = settings.readLine();
-        System.out.println("Is this player human? (Y or N)");
-        String playerHuman = settings.readLine();
-        while (playerHuman != "y" || playerHuman != "Y" || playerHuman != "n" || playerHuman != "N"){
-          System.out.println("Enter Y or N only");
-          playerHuman = settings.readLine();
-        }
-        boolean human;
-        if (playerHuman == "N" || playerHuman == "n" ){
-          human = false;
-        }
-        if (playerHuman == "Y" || playerHuman == "y" ){
-          human = true;
-        }
-        System.out.println("Enter a character for this player");
-        char[] characters = settings.readLine().toCharArray();
-        char newPlayerCharacter = characters[0];
-        
-  
-       // myMap.get(i) = new Player(newPlayerName,newPlayerCharacter, human, newBoard);
-      }
-      
-      
+      addPlayers();
       playGame();
     }catch(Exception e ){
     }
@@ -55,11 +20,6 @@ public class MyConnectFour {
     try{
       newBoard.printBoard();
       boolean win = false;
-      Player p1 = new Player("michalis",'r',true,newBoard);
-      Player p2 = new Player("someonelse",'y',true,newBoard);
-      ArrayList<Player> players = new ArrayList<Player>();
-      players.add(p1);
-      players.add(p2);
       String winner = "";
       while (!win){
         int move = 999999;
@@ -85,4 +45,68 @@ public class MyConnectFour {
     }
   }
 
+  private void addPlayers(){
+    System.out.println("Enter number of players (2-10)");
+    int numberOfPlayers = input.ReadLine();
+    try{
+    while(numberOfPlayers<=1 || numberOfPlayers >10){
+      System.out.println("Enter number of players (2-10)");
+      numberOfPlayers = input.ReadLine();
+    }
+    for(int i=0;i<numberOfPlayers;i++){
+      int z = 1+i;
+      System.out.println("Enter name of player " + z);
+      String newPlayerName = settings.readLine();
+      System.out.println("Is this player human? (Y or N)");
+      String playerHuman = settings.readLine();
+      Boolean humanHelper = false, human = true, charHelper = false;
+      while (!humanHelper){
+        switch(playerHuman){
+          case "y":
+            human=true;
+            humanHelper=true;
+            break;
+          case "Y":
+            human=true;
+            humanHelper=true;
+            break;
+          case "N":
+            human=false;
+            humanHelper=true;
+            break;
+          case "n":
+            human=false;
+            humanHelper=true;
+            break;
+          default:
+            System.out.println("Enter Y or N only");
+            playerHuman = settings.readLine();
+            break;
+        }
+      }
+      System.out.println("Enter a character for this player");
+      char[] characters = settings.readLine().toCharArray();
+      char newPlayerCharacter = characters[0];
+      while(!charHelper){
+        Boolean charNotFound = true;
+        for(Player checkPlayer : players){
+          if(checkPlayer.getChar() == newPlayerCharacter){
+            charNotFound = false;
+          }
+        }
+        if(charNotFound != true){
+          System.out.println("Character already used, please choose another one");
+          characters = settings.readLine().toCharArray();
+          newPlayerCharacter = characters[0];
+        } else if(charNotFound==true){
+          charHelper = true;
+        }
+      }
+      Player newPlayer = new Player(newPlayerName,newPlayerCharacter, human, newBoard);
+      players.add(newPlayer);
+    }
+    }catch(Exception e){
+      System.out.println("Error when trying to add players : " + e);
+    }
+  }
 }

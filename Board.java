@@ -66,8 +66,9 @@ public class Board {
     }
     return placed;
   }
-
+  
     public boolean searchForWin(char didCharWin){
+    //check horizontal
     int count = 0;
     for(int i=0; i<boardX; i++){
       for(int j=0; j<boardY; j++){
@@ -97,6 +98,20 @@ public class Board {
         }
       }
     }
+    for(int i = 3; i < boardX; i++){ //check negative dia
+			for(int j = 0; j < boardY - 3; j++){
+				if (board[i][j] == didCharWin && board[i-1][j+1] == didCharWin && board[i-2][j+2] == didCharWin && board[i-3][j+3] == didCharWin){
+					return true;
+				}
+			}
+		}
+		for(int i = 0; i < boardX - 3; i++){ //check positive dia
+			for(int j = 0; j < boardY - 3; j++){
+				if (board[i][j] == didCharWin && board[i+1][j+1] == didCharWin &&   board[i+2][j+2] == didCharWin && board[i+3][j+3] == didCharWin){
+					return true;
+				}
+			}
+		}
     return false;
   }
 
