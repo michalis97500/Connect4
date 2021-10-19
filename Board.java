@@ -2,6 +2,8 @@ public class Board {
   private char[][] board;
   String myPlaces;
   int minBoard = 4;
+  int boardX;
+  int boardY;
 
   public Board(int x, int y) { //guard
     if(x<minBoard){
@@ -12,6 +14,8 @@ public class Board {
       System.out.println("Y-dimension must be " + minBoard + " or more");
       y = minBoard;
     }
+    boardX = x;
+    boardY = y;
     board = new char[x][y];
     myPlaces = GetMyPlaces(x);
   }
@@ -30,11 +34,15 @@ public class Board {
       return "ERROR ON BOARD";
     }
   }
-
-  void printBoard() {
-    for (int i = 0; i < board.length; i++) {
-      System.out.println(board[i].length);
-      for (int j = 0; j < board[i].length - 1; j++) {
+  public int getBoardX(){
+    return boardX;
+  }
+  public int getBoardY(){
+    return boardY;
+  }
+  public void printBoard() {
+    for (int i = 0; i < boardY; i++) {
+      for (int j = 0; j < boardX; j++) { 
         if (board[j][i] != '\0') {
           System.out.print("| " + board[j][i] + " ");
         }else{
@@ -46,18 +54,50 @@ public class Board {
     System.out.println(myPlaces);
   }
 
-  boolean placeCounter(char characterToPlace, int positionToDrop) {
+  public boolean placeCounter(char characterToPlace, int positionToDrop) {
     boolean placed = false;
-    for (int i = board.length - 1; i >= 0; i--) {
+    for (int i = boardY - 1; i >= 0; i--) {
       if (!placed) {
         if (board[positionToDrop - 1][i] == '\0') {// position null
           board[positionToDrop - 1][i] = characterToPlace;
-          System.out.println(board[positionToDrop - 1][i]);
           placed = true;
         }
       }
     }
     return placed;
+  }
+
+    public boolean searchForWin(char didCharWin){
+    int count = 0;
+    for(int i=0; i<boardX; i++){
+      for(int j=0; j<boardY; j++){
+        if(board[i][j] == didCharWin){
+          count = count + 1;
+          if(count == 4){
+            return true;
+          }
+        }
+        else{
+          count = 0;
+        }
+      }
+    }
+    // check vertical 
+    count = 0;
+    for(int i=0; i<boardY; i++){
+      for(int j=0; j<boardX; j++){
+        if(board[j][i] == didCharWin){
+          count = count + 1;
+          if(count == 4){
+            return true;
+          }
+        }
+        else{
+          count = 0;
+        }
+      }
+    }
+    return false;
   }
 
 }

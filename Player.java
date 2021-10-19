@@ -22,9 +22,12 @@ public class Player {
   public Board whereIsPlaying(){
     return this.board;
   }
-  private Boolean haveIWon() {
-    
-    return true;
+  public Boolean haveIWon(){
+    return board.searchForWin(playerCharacter);
+  }
+  public void myMove(int positionToDrop){
+    board.placeCounter(playerCharacter, positionToDrop);
+    board.printBoard();
   }
 
 }
