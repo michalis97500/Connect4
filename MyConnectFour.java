@@ -102,7 +102,7 @@ public class MyConnectFour {
           charHelper = true;
         }
       }
-      Player newPlayer = new Player(newPlayerName,newPlayerCharacter, human, newBoard);
+      Player newPlayer = new Player(newPlayerName,newPlayerCharacter, newBoard);
       players.add(newPlayer);
     }
     }catch(Exception e){
