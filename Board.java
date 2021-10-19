@@ -135,5 +135,53 @@ public class Board {
   public char getCharAtPosition(int x, int y){
     return this.board[x][y];
   }
-
+  public int searchForPairs(char charToSearchFor, char[][] _board,int repetitions){
+    //check horizontal
+    int pairs = 0;
+    int count = 0;
+    for(int i=0; i<boardX; i++){
+      for(int j=0; j<boardY; j++){
+        if(_board[i][j] == charToSearchFor){
+          count = count + 1;
+          if(count == 4){
+            
+          }
+        }
+        else{
+          count = 0;
+        }
+      }
+    }
+    // check vertical 
+    count = 0;
+    for(int i=0; i<boardY; i++){
+      for(int j=0; j<boardX; j++){
+        if(_board[j][i] == charToSearchFor){
+          count = count + 1;
+          if(count == 4){
+            
+          }
+        }
+        else{
+          count = 0;
+        }
+      }
+    }
+    for(int i = 3; i < boardX; i++){ //check negative dia
+			for(int j = 0; j < boardY - 3; j++){
+				if (_board[i][j] == charToSearchFor && _board[i-1][j+1] == charToSearchFor && _board[i-2][j+2] == charToSearchFor && _board[i-3][j+3] == charToSearchFor){
+					
+				}
+			}
+		}
+		for(int i = 0; i < boardX - 3; i++){ //check positive dia
+			for(int j = 0; j < boardY - 3; j++){
+				if (_board[i][j] == charToSearchFor && _board[i+1][j+1] == charToSearchFor &&   _board[i+2][j+2] == charToSearchFor && _board[i+3][j+3] == charToSearchFor){
+					
+				}
+			}
+		}
+    
+  }
+  
 }
