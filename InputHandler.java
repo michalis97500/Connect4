@@ -25,6 +25,8 @@ public class InputHandler {
           }else{
             System.out.println("Invalid Input");
           }
+        }else{
+          System.out.println("Invalid Input");
         }
       }
       return userInput;

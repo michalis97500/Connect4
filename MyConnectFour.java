@@ -9,10 +9,13 @@ public class MyConnectFour {
 
   public MyConnectFour() {
     try {
-      System.out.println("Welcome to connect-N game. Play against other players or the computer!");
+      System.out.print("\033[H\033[2J");
+      System.out.flush();
+      System.out.println("\n\n\n\n\nWelcome to connect-N game. Play against other players or the computer!\n\n\n\n\n");
       while (true) {
         System.out.println("1. Start a new game with default settings (7x6 board, connect-4)");
         System.out.println("2. New Custom game");
+        System.out.println("3. Exit the game");
         switch(input.ReadLine()){
           case 3:
             System.exit(1);
@@ -51,6 +54,9 @@ public class MyConnectFour {
   private void playGame() {
     input.setMax(boardToPlayOn.getBoardX());
     exchangePlayerCharacters();
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
+    System.out.println(players.get(0).getName() + " goes first.");
     try {
       boardToPlayOn.printBoard();
       boolean win = false;
@@ -82,7 +88,7 @@ public class MyConnectFour {
           }
         }
       }
-      System.out.println(winner + " has won!!!");
+      System.out.println(winner + " has won!!! \n");
       players.clear();
     } catch (Exception e) {
 
@@ -187,6 +193,8 @@ public class MyConnectFour {
         }
         players.add(newPlayer);
       }
+      System.out.print("\033[H\033[2J");
+      System.out.flush();
     } catch (Exception e) {
       System.out.println("Error when trying to add players : " + e);
     }

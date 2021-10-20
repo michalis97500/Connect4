@@ -33,8 +33,13 @@ public class Player {
   }
   public boolean myMove(int positionToDrop){
     if (board.placeCounter(playerCharacter, positionToDrop,board.getBoardChars())){
+      System.out.print("\033[H\033[2J");
+      System.out.flush();
+      System.out.println("Last move by " + getName() + " at position " + positionToDrop);
       board.printBoard();
       return true;
+    } else {
+      System.out.println("That move is illegal");
     }
     return false;
   }
