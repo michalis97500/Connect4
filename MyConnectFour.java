@@ -158,7 +158,11 @@ public class MyConnectFour {
             characters = settings.readLine().toCharArray();
             newPlayerCharacter = characters[0];
           } else if (charNotFound == true) {
-            charHelper = true;
+            if (newPlayerCharacter != '\0'){
+              charHelper = true;
+            } else {
+                System.out.println("Enter a character:");
+            }
           }
         }
         if (human == true) {
