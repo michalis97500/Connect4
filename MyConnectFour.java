@@ -143,8 +143,20 @@ public class MyConnectFour {
             break;
           }
         }
+        boolean validCharacter = false;
         System.out.println("Enter a character for this player");
         char[] characters = settings.readLine().toCharArray();
+        while(!validCharacter){
+          switch(characters.length){
+            case 0:
+              System.out.println("Enter a character for this player");
+              characters = settings.readLine().toCharArray();
+              break;
+            default:
+              validCharacter = true;
+              break;
+          }
+        }
         char newPlayerCharacter = characters[0];
         while (!charHelper) {
           Boolean charNotFound = true;
@@ -158,11 +170,7 @@ public class MyConnectFour {
             characters = settings.readLine().toCharArray();
             newPlayerCharacter = characters[0];
           } else if (charNotFound == true) {
-            if (newPlayerCharacter != '\0'){
               charHelper = true;
-            } else {
-                System.out.println("Enter a character:");
-            }
           }
         }
         if (human == true) {
