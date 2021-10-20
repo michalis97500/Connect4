@@ -23,7 +23,10 @@ public class Player {
     return this.board;
   }
   public Boolean haveIWon(){
-    return board.searchForWin(playerCharacter,board.getBoardChars());
+    if(board.searchForPairs(playerCharacter,board.getBoardChars(),board.connectN()) >= 1){
+      return true;
+    }
+    return false;
   }
   public boolean myMove(int positionToDrop){
     if (board.placeCounter(playerCharacter, positionToDrop,board.getBoardChars())){

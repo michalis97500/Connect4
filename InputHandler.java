@@ -15,18 +15,20 @@ public class InputHandler {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     String userin;
     try { // Note : Handle exception
-      userin = input.readLine();
-      if(cleanString(userin) != "***"){
-        int userMove = Integer.parseInt(cleanString(userin));
-        if(userMove > 0 && userMove <= maxAllowedInt){
-          return userMove;
-        }else{
-          System.out.println("Invalid Move");
-          return 999999;
+      Boolean goodInput = false;
+      int userInput = 0;
+        while(!goodInput){
+        userin = input.readLine();
+        if(cleanString(userin) != "***"){
+          userInput = Integer.parseInt(cleanString(userin));
+          if(userInput > 0 && userInput <= maxAllowedInt){
+            goodInput=true;
+          }else{
+            System.out.println("Invalid Input");
+          }
         }
       }
-      System.out.println("Invalid Move");
-      return 999999;
+      return userInput;
     } catch (IOException e) {
       System.out.println("Error in reading line : " + e);
       return 999999;

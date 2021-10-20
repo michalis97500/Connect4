@@ -2,24 +2,48 @@ import java.io.*;
 import java.util.*;
 
 public class MyConnectFour {
-  Board newBoard = new Board(6, 8);
   BufferedReader settings = new BufferedReader(new InputStreamReader(System.in));
   InputHandler input = new InputHandler();
   ArrayList<Player> players = new ArrayList<Player>();
+  Board boardToPlayOn;
 
   public MyConnectFour() {
     try{
-      addPlayers();
-      playGame();
+      System.out.println("Welcome to connect-N game. Play against other players or the computer!");
+      while(true){
+        System.out.println("1. Start a new game with default settings (7x6 board, connect-4)");
+        System.out.println("2. New Custom game");
+        if(input.ReadLine() == 2){
+          input.setMax(99); //allow user to write any int
+          boardToPlayOn = setupBoard();
+          addPlayers();
+          playGame();
+        }
+        if(input.ReadLine() == 1){
+          boardToPlayOn = new Board(7,6,4);
+          addPlayers();
+          playGame();
+        }
+      }
     }catch(Exception e){
     }
   }
-
+  public Board setupBoard(){
+    System.out.println("Warning : Boards with either dimension > 10 will likely look weird");
+    System.out.println("Enter x dimension of board");
+    int x = input.ReadLine();
+    System.out.println("Enter y dimension of board");
+    int y = input.ReadLine();
+    System.out.println("Connect how many?");
+    int n = input.ReadLine();
+    Board newBoard = new Board(x,y,n);
+    return newBoard;
+  }
   private void playGame() {
-    input.setMax(newBoard.getBoardX());
+    input.setMax(boardToPlayOn.getBoardX());
     checkAIandStart();
     try{
-      newBoard.printBoard();
+      boardToPlayOn.printBoard();
       boolean win = false;
       String winner = "";
       while (!win){
@@ -61,6 +85,7 @@ public class MyConnectFour {
   }
 
   private void addPlayers(){
+    input.setMax(10);
     System.out.println("Enter number of players (2-10). If AI is to be used only 2 players allowed");
     int numberOfPlayers = input.ReadLine();
     try{
@@ -131,9 +156,9 @@ public class MyConnectFour {
         }
       }
       if(human == true){
-        newPlayer = new Player(newPlayerName,newPlayerCharacter, newBoard,human);
+        newPlayer = new Player(newPlayerName,newPlayerCharacter, boardToPlayOn,human);
       }else{
-        newPlayer = new AI(newPlayerName,newPlayerCharacter, newBoard);
+        newPlayer = new AI(newPlayerName,newPlayerCharacter, boardToPlayOn);
       }
       players.add(newPlayer);
     }

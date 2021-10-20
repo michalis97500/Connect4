@@ -1,11 +1,14 @@
+import java.util.*;
+
 public class Board {
   private char[][] board;
   private String myPlaces;
   private int minBoard = 4;
   private int boardX;
   private int boardY;
+  private int connectN;
   
-  public Board(int x, int y) { //guard
+  public Board(int x, int y,int n) { //guard
     if(x<minBoard){
       System.out.println("X-dimension must be " + minBoard + " or more");
       x = minBoard;
@@ -14,10 +17,11 @@ public class Board {
       System.out.println("Y-dimension must be " + minBoard + " or more");
       y = minBoard;
     }
-    boardX = x;
-    boardY = y;
-    board = new char[x][y];
-    myPlaces = GetMyPlaces(x);
+    this.connectN = n;
+    this.boardX = x;
+    this.boardY = y;
+    this.board = new char[x][y];
+    this.myPlaces = GetMyPlaces(x);
   }
   private String GetMyPlaces(int x){
     try{
@@ -64,55 +68,10 @@ public class Board {
     }
     return placed;
   }
-  public boolean searchForWin(char didCharWin, char[][] _board){
-    //check horizontal
-    int count = 0;
-    for(int i=0; i<boardX; i++){
-      for(int j=0; j<boardY; j++){
-        if(_board[i][j] == didCharWin){
-          count = count + 1;
-          if(count == 4){
-            return true;
-          }
-        }
-        else{
-          count = 0;
-        }
-      }
-      count = 0;
-    }
-    // check vertical 
-    count = 0;
-    for(int i=0; i<boardY; i++){
-      for(int j=0; j<boardX; j++){
-        if(_board[j][i] == didCharWin){
-          count = count + 1;
-          if(count == 4){
-            return true;
-          }
-        }
-        else{
-          count = 0;
-        }
-      }
-      count = 0;
-    }
-    for(int i = 3; i < boardX; i++){ //check negative dia
-			for(int j = 0; j < boardY - 3; j++){
-				if (_board[i][j] == didCharWin && _board[i-1][j+1] == didCharWin && _board[i-2][j+2] == didCharWin && _board[i-3][j+3] == didCharWin){
-					return true;
-				}
-			}
-		}
-		for(int i = 0; i < boardX - 3; i++){ //check positive dia
-			for(int j = 0; j < boardY - 3; j++){
-				if (_board[i][j] == didCharWin && _board[i+1][j+1] == didCharWin &&   _board[i+2][j+2] == didCharWin && _board[i+3][j+3] == didCharWin){
-					return true;
-				}
-			}
-		}
-    return false;
+  public int connectN(){
+    return this.connectN;
   }
+
   public char[][] getBoardChars(){
     return board;
   }
@@ -123,7 +82,6 @@ public class Board {
       }
     }
   }
-
   public char getCharAtPosition(int x, int y){
     return this.board[x][y];
   }
@@ -161,55 +119,40 @@ public class Board {
       }
       count = 0;
     }
+    for(int i = repetitions - 1; i < boardX; i++){ //check negative dia
+			for(int j = 0; j < boardY - (repetitions - 1); j++){
+        ArrayList<Character> storeChar = new ArrayList<Character>();
+        //store n characters in an arraylist
+        for(int winInt = 0; winInt<repetitions;winInt++){
+          storeChar.add(_board[i-winInt][j+winInt]);
+        }
+        //This trick was inspired by a question in Stackoverflow, https://stackoverflow.com/questions/562894/java-detect-duplicates-in-arraylist
+        //Code was modified for this implementation
+        Set<Character> set = new HashSet<Character>(storeChar); //convert to set, duplicates will be removed
+        Object[] testArray = set.toArray(); //make it an array again
+        if(testArray.length == 1 && testArray[0] == (Object)charToSearchFor){ //only 1 char exists AND that char is the one we want
+          pairs++;
+        }
+        storeChar.clear();
+			}
+    }
+    for(int i = 0; i < boardX - (repetitions - 1); i++){ //check positive dia
+			for(int j = 0; j < boardY -(repetitions - 1); j++){
+        ArrayList<Character> storeChar = new ArrayList<Character>();
+        //store n characters in an arraylist
+        for(int winInt = 0; winInt<repetitions;winInt++){
+          storeChar.add(_board[i+winInt][j+winInt]);
+        }
+        //This trick was inspired by a question in Stackoverflow, https://stackoverflow.com/questions/562894/java-detect-duplicates-in-arraylist
+        //Code was modified for this implementation
+        Set<Character> set = new HashSet<Character>(storeChar);
+        Object[] testArray = set.toArray();
+        if(testArray.length == 1 && testArray[0] == (Object)charToSearchFor){
+          pairs++;
+        }
+        storeChar.clear();
+			}
+		}
     return pairs;   
   }
-  public int searchForDiagonals(char charToSearchFor, char[][] _board,int repetitions){
-    int pairs =0;
-    switch(repetitions){
-      case 3:
-        for(int i = 3; i < boardX; i++){ //check negative dia
-          for(int j = 0; j < boardY - 3; j++){
-            if (_board[i][j] == charToSearchFor && _board[i-1][j+1] == charToSearchFor && _board[i-2][j+2] == charToSearchFor){
-              pairs++;
-            }
-          }
-        }
-        for(int i = 0; i < boardX - 3; i++){ //check positive dia
-          for(int j = 0; j < boardY - 3; j++){
-            if (_board[i][j] == charToSearchFor && _board[i+1][j+1] == charToSearchFor &&   _board[i+2][j+2] == charToSearchFor){
-              pairs++;
-            }
-          }
-        }
-        break;
-      case 2:
-        for(int i = 3; i < boardX; i++){ //check negative dia
-          for(int j = 0; j < boardY - 3; j++){
-            if (_board[i][j] == charToSearchFor && _board[i-1][j+1] == charToSearchFor ){
-              pairs++;
-            }
-          }
-        }
-        for(int i = 0; i < boardX - 3; i++){ //check positive dia
-          for(int j = 0; j < boardY - 3; j++){
-            if (_board[i][j] == charToSearchFor && _board[i+1][j+1] == charToSearchFor){
-              pairs++;
-            }
-          }
-        }
-        break;
-    }
-    return pairs;
-  }
 }
-/*  public int canMoveWin(char characterToPlace){
-    for(int i=1; i<=boardX; i++){
-      Board temporaryHelper = new Board(this.boardX,this.boardY);
-      temporaryHelper.setBoardChars(this.board);
-      placeCounter(characterToPlace, i,temporaryHelper.getBoardChars());
-      if(searchForWin(characterToPlace, temporaryHelper.getBoardChars()) == true){
-        return i;
-      } 
-    }
-    return 0;
-  }*/
