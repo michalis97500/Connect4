@@ -146,34 +146,37 @@ public class MyConnectFour {
         boolean validCharacter = false;
         System.out.println("Enter a character for this player");
         char[] characters = settings.readLine().toCharArray();
-        while(!validCharacter){
-          switch(characters.length){
-            case 0:
-              System.out.println("Enter a character for this player");
-              characters = settings.readLine().toCharArray();
-              break;
-            default:
-              if(characters[0] != ' '){
-                validCharacter = true;
-                break;
-              }
+        char newPlayerCharacter = '\0';
+        while (!charHelper) { //is char unique?
+          while(!validCharacter){ // is char valid?
+            switch(characters.length){
+              case 0:
                 System.out.println("Enter a character for this player");
+                characters = settings.readLine().toCharArray();
                 break;
-          }
-        }
-        char newPlayerCharacter = characters[0];
-        while (!charHelper) {
-          Boolean charNotFound = true;
-          for (Player checkPlayer : players) {
-            if (checkPlayer.getChar() == newPlayerCharacter) {
-              charNotFound = false;
+              default:
+                if(characters[0] != ' '){
+                  validCharacter = true;
+                  newPlayerCharacter = characters[0];
+                  break;
+                }
+                  System.out.println("Enter a character for this player");
+                  characters = settings.readLine().toCharArray();
+                  break;
             }
           }
-          if (charNotFound != true) {
-            System.out.println("Character already used, please choose another one");
+          Boolean isCharUnique = true;
+          for (Player checkPlayer : players) {
+            if (checkPlayer.getChar() == newPlayerCharacter) {
+              isCharUnique = false;
+              validCharacter = false;
+            }
+          }
+          if (isCharUnique != true) {
+            System.out.println("Character \"" + characters[0] + "\" already used, please choose another one");
             characters = settings.readLine().toCharArray();
-            newPlayerCharacter = characters[0];
-          } else if (charNotFound == true) {
+          } else if (isCharUnique == true) {
+              System.out.println("Character \"" + characters[0] + "\" chosen successfuly");
               charHelper = true;
           }
         }
