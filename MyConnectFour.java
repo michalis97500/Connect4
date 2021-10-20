@@ -133,7 +133,7 @@ public class MyConnectFour {
       if(human == true){
         newPlayer = new Player(newPlayerName,newPlayerCharacter, newBoard,human);
       }else{
-        newPlayer = new AI(newPlayerName,newPlayerCharacter, newBoard,1);
+        newPlayer = new AI(newPlayerName,newPlayerCharacter, newBoard);
       }
       players.add(newPlayer);
     }

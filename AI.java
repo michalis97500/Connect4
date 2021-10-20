@@ -1,16 +1,16 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 public class AI extends Player {
 
-  private int depth;
   private char enemyCharacter;
-  public AI(String name,char playerChar,Board boardIplayOn,int depth){
+  public AI(String name,char playerChar,Board boardIplayOn){
     super(name, playerChar, boardIplayOn,false);
-    this.depth = depth;
+    
   }
   public int canMoveWin(char characterToPlace,Board boardIplayOn){
+    //creates virtual board, loops through all moves, if there is win return 1 else return 0
     for(int i=1; i<=this.board.getBoardX(); i++){
       Board temporaryHelper = new Board(this.board.getBoardX(),this.board.getBoardY());
       temporaryHelper.setBoardChars(this.board.getBoardChars());
@@ -21,7 +21,6 @@ public class AI extends Player {
     }
     return 0;
   }
-
   public ArrayList<Integer> moveValue(char friendlyCharacter, char enemyCharacter, Board boardToCheck){
     ArrayList<Integer> listOfMoves = new ArrayList<Integer>();
     for(int positionToPlay=1;positionToPlay<1+boardToCheck.getBoardX();positionToPlay++){ //for all possible plays that I can make
@@ -46,7 +45,6 @@ public class AI extends Player {
     System.out.println(listOfMoves);
     return listOfMoves;
   }
-  
   @Override
   public void setEnemyCharacter(char enemyCharacter){
     this.enemyCharacter = enemyCharacter;
@@ -62,21 +60,19 @@ public class AI extends Player {
       this.myMove(canMoveWin(this.enemyCharacter, this.board));;
       return 1; //i blocked enemy
     }
-    boolean validMove = false;
-    ArrayList<Integer> moves = new ArrayList<Integer>();
-    while(!validMove){
-      moves = moveValue(this.playerCharacter,this.enemyCharacter,this.board);
-      //since more than 1 spot can be "best-move", lets choose randomly one
-      ArrayList<Integer> bestmoves = new ArrayList<Integer>();
-      for(int spot : moves){
-        if(spot == Collections.max(moves)){
-          bestmoves.add(moves.indexOf(spot));
-        }
+    ArrayList<Integer> moves = moveValue(this.playerCharacter,this.enemyCharacter,this.board);
+    //since more than 1 spot can be "best-move", lets choose randomly one
+    ArrayList<Integer> bestmoves = new ArrayList<Integer>();
+    int maxVal = Collections.max(moves);
+    for(int spot : moves){
+      if(spot == maxVal){
+        bestmoves.add(moves.indexOf(spot));
+        moves.set(moves.indexOf(spot), spot-1);
       }
-      moves.clear(); 
-      int moveToPlay = bestmoves.get(ThreadLocalRandom.current().nextInt(0, bestmoves.size()));
-      validMove = myMove(moveToPlay+1);
     }
-    return 0; // i did nothing
+    int moveToPlay = bestmoves.get(new Random().nextInt(bestmoves.size()));
+    moves.clear();
+    myMove(moveToPlay+1);
+    return 0; //i moved
   }
 }

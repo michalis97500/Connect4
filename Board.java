@@ -79,6 +79,7 @@ public class Board {
           count = 0;
         }
       }
+      count = 0;
     }
     // check vertical 
     count = 0;
@@ -94,6 +95,7 @@ public class Board {
           count = 0;
         }
       }
+      count = 0;
     }
     for(int i = 3; i < boardX; i++){ //check negative dia
 			for(int j = 0; j < boardY - 3; j++){
@@ -121,17 +123,7 @@ public class Board {
       }
     }
   }
-  public int canMoveWin(char characterToPlace){
-    for(int i=1; i<=boardX; i++){
-      Board temporaryHelper = new Board(this.boardX,this.boardY);
-      temporaryHelper.setBoardChars(this.board);
-      placeCounter(characterToPlace, i,temporaryHelper.getBoardChars());
-      if(searchForWin(characterToPlace, temporaryHelper.getBoardChars()) == true){
-        return i;
-      } 
-    }
-    return 0;
-  }
+
   public char getCharAtPosition(int x, int y){
     return this.board[x][y];
   }
@@ -151,6 +143,7 @@ public class Board {
           count = 0;
         }
       }
+      count = 0;
     }
     // check vertical 
     count = 0;
@@ -166,6 +159,7 @@ public class Board {
           count = 0;
         }
       }
+      count = 0;
     }
     return pairs;   
   }
@@ -208,3 +202,14 @@ public class Board {
     return pairs;
   }
 }
+/*  public int canMoveWin(char characterToPlace){
+    for(int i=1; i<=boardX; i++){
+      Board temporaryHelper = new Board(this.boardX,this.boardY);
+      temporaryHelper.setBoardChars(this.board);
+      placeCounter(characterToPlace, i,temporaryHelper.getBoardChars());
+      if(searchForWin(characterToPlace, temporaryHelper.getBoardChars()) == true){
+        return i;
+      } 
+    }
+    return 0;
+  }*/
