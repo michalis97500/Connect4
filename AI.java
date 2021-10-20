@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AI extends Player {
@@ -22,17 +23,28 @@ public class AI extends Player {
   }
 
   public ArrayList<Integer> moveValue(char friendlyCharacter, char enemyCharacter, Board boardToCheck){
-    for(int positionToPlay=1;positionToPlay<boardToCheck.getBoardX();positionToPlay++){ //for all possible plays that I can make
+    ArrayList<Integer> listOfMoves = new ArrayList<Integer>();
+    for(int positionToPlay=1;positionToPlay<1+boardToCheck.getBoardX();positionToPlay++){ //for all possible plays that I can make
       Board temporaryHelper = new Board(this.board.getBoardX(),this.board.getBoardY()); //create temp board
-      temporaryHelper.setBoardChars(this.board.getBoardChars());
-      this.board.placeCounter(friendlyCharacter,positionToPlay,temporaryHelper.getBoardChars()); //I have made my play.
+      temporaryHelper.setBoardChars(boardToCheck.getBoardChars());
+      if(this.board.placeCounter(friendlyCharacter,positionToPlay,temporaryHelper.getBoardChars())){ //I have made my play.
+        int thisMove = 0;
         for(int i=0;i<temporaryHelper.getBoardX();i++){ //loop through all positions
           for(int j=0;j<temporaryHelper.getBoardY();j++){
-
+            int diag2 = temporaryHelper.searchForDiagonals(friendlyCharacter, temporaryHelper.getBoardChars(), 2);
+            int diag3 = temporaryHelper.searchForDiagonals(friendlyCharacter, temporaryHelper.getBoardChars(), 3);
+            int pairs2 = temporaryHelper.searchForPairs(friendlyCharacter, temporaryHelper.getBoardChars(), 2);
+            int pairs3 = temporaryHelper.searchForPairs(friendlyCharacter, temporaryHelper.getBoardChars(), 3);
+            thisMove =+ diag2+ diag3*100 +pairs2 + pairs3*100;
           }
         }
-
+        listOfMoves.add(thisMove);
+      }else {
+        listOfMoves.add(0);
+      }
     }
+    System.out.println(listOfMoves);
+    return listOfMoves;
   }
   
   @Override
@@ -51,9 +63,19 @@ public class AI extends Player {
       return 1; //i blocked enemy
     }
     boolean validMove = false;
+    ArrayList<Integer> moves = new ArrayList<Integer>();
     while(!validMove){
-      int randomNum = ThreadLocalRandom.current().nextInt(1, this.board.getBoardX() + 1);
-      validMove = myMove(randomNum);
+      moves = moveValue(this.playerCharacter,this.enemyCharacter,this.board);
+      //since more than 1 spot can be "best-move", lets choose randomly one
+      ArrayList<Integer> bestmoves = new ArrayList<Integer>();
+      for(int spot : moves){
+        if(spot == Collections.max(moves)){
+          bestmoves.add(moves.indexOf(spot));
+        }
+      }
+      moves.clear(); 
+      int moveToPlay = bestmoves.get(ThreadLocalRandom.current().nextInt(0, bestmoves.size()));
+      validMove = myMove(moveToPlay+1);
     }
     return 0; // i did nothing
   }

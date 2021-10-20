@@ -143,8 +143,8 @@ public class Board {
       for(int j=0; j<boardY; j++){
         if(_board[i][j] == charToSearchFor){
           count = count + 1;
-          if(count == 4){
-            
+          if(count == repetitions){
+            pairs++;
           }
         }
         else{
@@ -158,8 +158,8 @@ public class Board {
       for(int j=0; j<boardX; j++){
         if(_board[j][i] == charToSearchFor){
           count = count + 1;
-          if(count == 4){
-            
+          if(count == repetitions){
+            pairs++;
           }
         }
         else{
@@ -167,21 +167,44 @@ public class Board {
         }
       }
     }
-    for(int i = 3; i < boardX; i++){ //check negative dia
-			for(int j = 0; j < boardY - 3; j++){
-				if (_board[i][j] == charToSearchFor && _board[i-1][j+1] == charToSearchFor && _board[i-2][j+2] == charToSearchFor && _board[i-3][j+3] == charToSearchFor){
-					
-				}
-			}
-		}
-		for(int i = 0; i < boardX - 3; i++){ //check positive dia
-			for(int j = 0; j < boardY - 3; j++){
-				if (_board[i][j] == charToSearchFor && _board[i+1][j+1] == charToSearchFor &&   _board[i+2][j+2] == charToSearchFor && _board[i+3][j+3] == charToSearchFor){
-					
-				}
-			}
-		}
-    
+    return pairs;   
   }
-  
+  public int searchForDiagonals(char charToSearchFor, char[][] _board,int repetitions){
+    int pairs =0;
+    switch(repetitions){
+      case 3:
+        for(int i = 3; i < boardX; i++){ //check negative dia
+          for(int j = 0; j < boardY - 3; j++){
+            if (_board[i][j] == charToSearchFor && _board[i-1][j+1] == charToSearchFor && _board[i-2][j+2] == charToSearchFor){
+              pairs++;
+            }
+          }
+        }
+        for(int i = 0; i < boardX - 3; i++){ //check positive dia
+          for(int j = 0; j < boardY - 3; j++){
+            if (_board[i][j] == charToSearchFor && _board[i+1][j+1] == charToSearchFor &&   _board[i+2][j+2] == charToSearchFor){
+              pairs++;
+            }
+          }
+        }
+        break;
+      case 2:
+        for(int i = 3; i < boardX; i++){ //check negative dia
+          for(int j = 0; j < boardY - 3; j++){
+            if (_board[i][j] == charToSearchFor && _board[i-1][j+1] == charToSearchFor ){
+              pairs++;
+            }
+          }
+        }
+        for(int i = 0; i < boardX - 3; i++){ //check positive dia
+          for(int j = 0; j < boardY - 3; j++){
+            if (_board[i][j] == charToSearchFor && _board[i+1][j+1] == charToSearchFor){
+              pairs++;
+            }
+          }
+        }
+        break;
+    }
+    return pairs;
+  }
 }
