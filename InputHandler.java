@@ -1,5 +1,4 @@
 import java.io.*;
-
 /*
   Input handler class by *Author name hidden* adapted from SRPN-Calc project. This is my own work.
 */

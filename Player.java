@@ -1,8 +1,11 @@
+import java.util.ArrayList;
+
 public class Player {
   char playerCharacter;
   String playerName;
   Board board;
   boolean human;
+  ArrayList<Character> enemyCharacterList = new ArrayList<Character>();
 
   public Player(String name, char playerChar, Board boardIplayOn, boolean human) {
     this.playerCharacter = playerChar;
@@ -23,7 +26,7 @@ public class Player {
     return this.board;
   }
   public Boolean haveIWon(){
-    if(board.searchForPairs(playerCharacter,board.getBoardChars(),board.connectN()) >= 1){
+    if(board.searchForPairs(playerCharacter,board.getBoardChars(),board.getconnectN()) >= 1){
       return true;
     }
     return false;
@@ -38,7 +41,7 @@ public class Player {
   public int makeMove(){
     return 0; //do nothing
   }
-  public void setEnemyCharacter(char enemyCharacter){
+  public void setEnemyCharacter(ArrayList<Character> enemyCharacters){
     //donoth
   }
 
