@@ -153,8 +153,12 @@ public class MyConnectFour {
               characters = settings.readLine().toCharArray();
               break;
             default:
-              validCharacter = true;
-              break;
+              if(characters[0] != ' '){
+                validCharacter = true;
+                break;
+              }
+                System.out.println("Enter a character for this player");
+                break;
           }
         }
         char newPlayerCharacter = characters[0];
