@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements PlayerInterface{
   char playerCharacter;
   String playerName;
   Board board;
@@ -47,7 +47,11 @@ public class Player {
     return 0; //do nothing
   }
   public void setEnemyCharacter(ArrayList<Character> enemyCharacters){
-    //donoth
+    //do nothing
+  }
+  @Override
+  public void setEnemyCharacter(char enemyCharacter) {
+    //do nothing
   }
 
 }
