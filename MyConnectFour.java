@@ -40,6 +40,7 @@ public class MyConnectFour {
   }
 
   public Board setupBoard() {
+    input.setMax(999);
     System.out.println("Warning : Boards with either dimension > 10 will likely look weird");
     System.out.println("Enter x dimension of board");
     int x = input.ReadLine();
@@ -48,6 +49,7 @@ public class MyConnectFour {
     System.out.println("Connect how many?");
     int n = input.ReadLine();
     Board newBoard = new Board(x, y, n);
+    input.setMax(10);
     return newBoard;
   }
 
@@ -60,11 +62,16 @@ public class MyConnectFour {
     try {
       boardToPlayOn.printBoard();
       boolean win = false;
+      boolean draw = false;
       String winner = "";
-      while (!win) {
+      while (!win && !draw) {
         int move = 999999;
         for (Player currentPlayer : players) {
           if (currentPlayer.amIHuman() == true) {
+            draw = boardToPlayOn.didMatchDraw();
+            if (draw == true) {
+              break;
+            }
             boolean validInput = false;
             while (!validInput) {
               move = input.ReadLine();
@@ -79,6 +86,10 @@ public class MyConnectFour {
               break;
             }
           } else if (currentPlayer.amIHuman() != true) {
+            draw = boardToPlayOn.didMatchDraw();
+            if (draw == true) {
+              break;
+            }
             currentPlayer.makeMove();
             win = currentPlayer.haveIWon();
             if (win == true) {
@@ -88,7 +99,12 @@ public class MyConnectFour {
           }
         }
       }
-      System.out.println(winner + " has won!!! \n");
+      if(win==true){
+        System.out.println(winner + " has won!!! \n");
+      }
+      if(draw==true){
+        System.out.println("Match was a draw\n");
+      }
       players.clear();
     } catch (Exception e) {
 

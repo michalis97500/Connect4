@@ -1,9 +1,10 @@
 import java.util.*;
+import java.lang.Math;
 
 public class Board {
   private char[][] board;
   private String myPlaces;
-  private int minBoard = 4;
+  private int minBoard = 2;
   private int boardX;
   private int boardY;
   private int connectN;
@@ -16,6 +17,11 @@ public class Board {
     if (y < minBoard) {
       System.out.println("Y-dimension must be " + minBoard + " or more");
       y = minBoard;
+    }
+    if(n > Math.sqrt(Math.pow(y,2)+Math.pow(x,2))){
+      Integer nold = n;
+      n = (int)Math.sqrt(Math.pow(y,2)+Math.pow(x,2)) - 1;
+      System.out.println("With connect N set to " + nold + " all match results in draw/instant win. Resetting to " + n);
     }
     this.connectN = n;
     this.boardX = x;
@@ -104,6 +110,17 @@ public class Board {
       }
     }
     return placed;
+  }
+
+  public boolean didMatchDraw(){
+    for (char[] charcterArray : board){
+      for (char character : charcterArray){
+        if (character == '\0'){
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   public int searchForPairs(char charToSearchFor, char[][] _board, int repetitions) {
