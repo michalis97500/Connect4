@@ -9,13 +9,13 @@ public class MyConnectFour {
 
   public MyConnectFour() {
     try {
-      System.out.print("\033[H\033[2J");
+      System.out.print("\033[H\033[2J"); //clean screen
       System.out.flush();
-      System.out.println("\n\n\n\n\nWelcome to connect-N game. Play against other players or the computer!\n\n\n\n\n");
+      System.out.println("🎲 Welcome to connect-N game 🎲. Play against other players🕹️  or the computer!🤖 \u001B[0m \n\n"); //emojis used here
       while (true) {
-        System.out.println("1. Start a new game with default settings (7x6 board, connect-4)");
-        System.out.println("2. New Custom game");
-        System.out.println("3. Exit the game");
+        System.out.println("1-> Start a new game with default settings (7x6 board, connect-4)");
+        System.out.println("2-> New Custom game");
+        System.out.println("3-> Exit the game");
         switch(input.ReadLine()){
           case 3:
             System.exit(1);
@@ -36,6 +36,7 @@ public class MyConnectFour {
         }
       }
     } catch (Exception e) {
+      System.out.println("Error in loading game : " + e);
     }
   }
 
@@ -54,12 +55,12 @@ public class MyConnectFour {
   }
 
   private void playGame() {
-    input.setMax(boardToPlayOn.getBoardX());
-    exchangePlayerCharacters();
-    System.out.print("\033[H\033[2J");
-    System.out.flush();
-    System.out.println(players.get(0).getName() + " goes first.");
     try {
+      input.setMax(boardToPlayOn.getBoardX());
+      exchangePlayerCharacters();
+      System.out.print("\033[H\033[2J");
+      System.out.flush();
+      System.out.println(players.get(0).getName() + " goes first.");
       boardToPlayOn.printBoard();
       boolean win = false;
       boolean draw = false;
@@ -107,7 +108,7 @@ public class MyConnectFour {
       }
       players.clear();
     } catch (Exception e) {
-
+      System.out.println("Error in running game : " + e);
     }
   }
 
