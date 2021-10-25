@@ -9,9 +9,9 @@ public class MyConnectFour {
 
   public MyConnectFour() {
     try {
-      System.out.print("\033[H\033[2J"); //clean screen
+      System.out.print("\033[H\033[2J"); //clean screen - this works well in VSCode + repl.it
       System.out.flush();
-      System.out.println("🎲 Welcome to connect-N game 🎲. Play against other players🕹️  or the computer!🤖 \u001B[0m \n\n"); //emojis used here
+      System.out.println(" Welcome to connect-N game. Play against other players  or the computer! \u001B[0m \n\n");
       while (true) {
         System.out.println("1-> Start a new game with default settings (7x6 board, connect-4)");
         System.out.println("2-> New Custom game");
