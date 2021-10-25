@@ -46,11 +46,8 @@ public class Player implements PlayerInterface{
   public int makeMove(){
     return 0; //do nothing
   }
-  public void setEnemyCharacter(ArrayList<Character> enemyCharacters){
-    //do nothing
-  }
   @Override
-  public void setEnemyCharacter(char enemyCharacter) {
+  public void setEnemyCharacter(ArrayList<Character> enemyCharacters){
     //do nothing
   }
 
