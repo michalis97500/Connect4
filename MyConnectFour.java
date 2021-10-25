@@ -31,7 +31,7 @@ public class MyConnectFour {
             playGame();
             break;
           default:
-            System.out.println("Please choose 1 or 2");
+            System.out.println("Please choose 1,2 or 3");
             break;
         }
       }
