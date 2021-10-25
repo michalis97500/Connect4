@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 interface PlayerInterface {
   public char getChar();
   public String getName();
@@ -6,5 +8,5 @@ interface PlayerInterface {
   public Boolean haveIWon();
   public boolean myMove(int positionToDrop);
   public int makeMove();
-  public void setEnemyCharacter(char enemyCharacter);
+  public void setEnemyCharacter(ArrayList<Character> enemyCharacter);
 }
