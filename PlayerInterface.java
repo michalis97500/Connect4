@@ -7,6 +7,6 @@ interface PlayerInterface {
   public Board whereIsPlaying();
   public Boolean haveIWon();
   public boolean myMove(int positionToDrop);
-  public int makeMove();
+  public int makeMove(InputHandler input);
   public void setEnemyCharacter(ArrayList<Character> enemyCharacter);
 }

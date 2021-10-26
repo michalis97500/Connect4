@@ -9,9 +9,8 @@ public class MyConnectFour {
 
   public MyConnectFour() {
     try {
-      System.out.print("\033[H\033[2J"); //clean screen - this works well in VSCode + repl.it
-      System.out.flush();
-      System.out.println(" Welcome to connect-N game. Play against other players  or the computer! \u001B[0m \n\n");
+      cleanConsole();
+      System.out.println(" Welcome to connect-N game. Play against other players  or the computer!\n\n");
       while (true) {
         System.out.println("1-> Start a new game with default settings (7x6 board, connect-4)");
         System.out.println("2-> New Custom game");
@@ -40,6 +39,11 @@ public class MyConnectFour {
     }
   }
 
+  public void cleanConsole(){
+    System.out.print("\033[H\033[2J"); //clean screen - this works well in VSCode + repl.it
+    System.out.flush();
+  }
+
   public Board setupBoard() {
     input.setMax(999);
     System.out.println("Warning : Boards with either dimension > 10 will likely look weird");
@@ -58,46 +62,17 @@ public class MyConnectFour {
     try {
       input.setMax(boardToPlayOn.getBoardX());
       exchangePlayerCharacters();
-      System.out.print("\033[H\033[2J");
-      System.out.flush();
+      cleanConsole();
       System.out.println(players.get(0).getName() + " goes first.");
       boardToPlayOn.printBoard();
-      boolean win = false;
-      boolean draw = false;
+      boolean win = false , draw = false;
       String winner = "";
       while (!win && !draw) {
-        int move = 999999;
         for (Player currentPlayer : players) {
-          if (currentPlayer.amIHuman() == true) {
-            draw = boardToPlayOn.didMatchDraw();
-            if (draw == true) {
-              break;
-            }
-            boolean validInput = false;
-            while (!validInput) {
-              move = input.ReadLine();
-              if (move != 999999) {// valid move
-                validInput = true;
-              }
-            }
-            currentPlayer.myMove(move);
-            win = currentPlayer.haveIWon();
-            if (win == true) {
-              winner = currentPlayer.getName();
-              break;
-            }
-          } else if (currentPlayer.amIHuman() != true) {
-            draw = boardToPlayOn.didMatchDraw();
-            if (draw == true) {
-              break;
-            }
-            currentPlayer.makeMove();
-            win = currentPlayer.haveIWon();
-            if (win == true) {
-              winner = currentPlayer.getName();
-              break;
-            }
-          }
+          if (boardToPlayOn.didMatchDraw() == true){ draw = true; break;}
+          currentPlayer.makeMove(input);
+          win = currentPlayer.haveIWon();
+          if (win == true) { winner = currentPlayer.getName(); break;}
         }
       }
       if(win==true){
@@ -112,21 +87,24 @@ public class MyConnectFour {
     }
   }
 
-  private void exchangePlayerCharacters() {
+  private void exchangePlayerCharacters() { //get everyones characters and give them to possible bots
     try{
       ArrayList<Character> allPlayerCharacters = new ArrayList<Character>();
-      for(Player currentPlayer : players){
-        allPlayerCharacters.add(currentPlayer.getChar());
+      for(Player thisPlayer : players){
+        allPlayerCharacters.add(thisPlayer.getChar());
       }
-      for(Player currentPlayer : players){
-        currentPlayer.setEnemyCharacter(allPlayerCharacters);
+      for(Player thisPlayer : players){
+        thisPlayer.setEnemyCharacter(allPlayerCharacters);
       }
     }catch (Exception e){
       System.out.println("Error when trying to set enemy characters: " + e);
     }
   }
 
-  private void addPlayers() { //method to add AI or Human players
+  private void addPlayers() {
+    /*method to add AI or Human players. Asks user for input of a name, whether player is human or bot, and a character
+    Will check if the character is unique AND if it is valid i.e. not '\0' (nothing) or a whitespace ' '
+    */
     input.setMax(10);
     System.out.println("Enter number of players (2-10).");
     int numberOfPlayers = input.ReadLine();
@@ -178,7 +156,7 @@ public class MyConnectFour {
                 characters = settings.readLine().toCharArray();
                 break;
               default:
-                if(characters[0] != ' '){
+                if(characters[0] != ' '){//not empty or a space
                   validCharacter = true;
                   newPlayerCharacter = characters[0];
                   break;
@@ -210,8 +188,7 @@ public class MyConnectFour {
         }
         players.add(newPlayer);
       }
-      System.out.print("\033[H\033[2J");
-      System.out.flush();
+      cleanConsole();
     } catch (Exception e) {
       System.out.println("Error when trying to add players : " + e);
     }

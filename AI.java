@@ -52,7 +52,7 @@ public class AI extends Player {
   }
 
   @Override
-  public int makeMove() {
+  public int makeMove(InputHandler input) {
     // look for win
     if (canMoveWin(this.playerCharacter, this.board) != 0) {
       this.myMove(canMoveWin(this.playerCharacter, this.board));

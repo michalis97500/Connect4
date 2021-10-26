@@ -31,22 +31,37 @@ public class Player implements PlayerInterface{
     }
     return false;
   }
+
   public boolean myMove(int positionToDrop){
-    if (board.placeCounter(playerCharacter, positionToDrop,board.getBoardChars())){
-      System.out.print("\033[H\033[2J");
-      System.out.flush();
-      System.out.println("Last move by " + getName() + " at position " + positionToDrop);
-      board.printBoard();
-      return true;
-    } else {
-      System.out.println("That move is illegal");
+    try{
+        if (board.placeCounter(playerCharacter, positionToDrop,board.getBoardChars())){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        System.out.println("Last move by " + getName() + " at position " + positionToDrop);
+        board.printBoard();
+        return true;
+      } else {
+        System.out.println("That move is illegal");
+      }
+      return false;
+    } catch(Exception e){
+      System.out.println("Error when trying to make move : " + e);
+      return false;
     }
-    return false;
   }
-  public int makeMove(){
-    return 0; //do nothing
+
+  public int makeMove(InputHandler input){
+    int move = 999999; //wait for legal move from player
+    boolean validInput = false;
+    while (!validInput) {
+      move = input.ReadLine();
+      if (move != 999999) {// valid move
+        validInput = true;
+      }
+    }
+    this.myMove(move);
+    return 0;
   }
-  @Override
   public void setEnemyCharacter(ArrayList<Character> enemyCharacters){
     //do nothing
   }
